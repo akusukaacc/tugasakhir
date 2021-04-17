@@ -153,5 +153,128 @@ class Main extends BD_Controller {
             }
         }
     }
+    public function barang_post(){
+        $nama_barang = $this->post ('nama_barang');
+        $jenis = $this->post ('jenis');
+        $jumlah = $this->post ('jumlah');
+        $input_date = $this->post ('input_date');
+        $status = $this->post ('status');
+        
 
+        $data = [
+            "nama_barang"=>$nama_barang,
+            "jenis"=>$jenis,
+            "jumlah"=>$jumlah,
+            "input_date"=>$input_date,
+            "status"=>$status
+        ];
+
+        $createuser = $this->Crud->createData('table_barang',$data);
+        
+        if ($createuser){
+            $output = [
+                'status' => 200,
+                'error' => false,
+                'massage' => 'Succses Create Data',
+                'data' => $data
+            ];
+            $this -> set_response($output, REST_Controller ::HTTP_OK);
+        }else{
+            $output = [
+            'status' => 400,
+            'error' => false,
+            'massage' => 'Failed Create Data',
+            'data' => []
+        ];
+            $this -> set_response($output, REST_Controller ::HTTP_BAD_REQUEST);
+        }
+    }
+    public function barang_put()
+    {
+
+        $id = $this->get('id');
+
+
+        if ($id === NULL)
+        {
+            $barangUser = $this->Crud->readData('nama_barang,jenis,jumlah,input_date,status,id','table_barang')->result();
+            if ($barangUser)
+            {
+                // Set the response and exit
+                $output = [
+                    'status' => 200,
+                    'error' => false,
+                    'message' => 'Berhasil Menambahkan Barang',
+                    'data'=> $barangUser
+                ];
+                $this->response($output, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+            }
+            else
+            {
+                // Set the response and exit
+                $output = [
+                    'status' => 404,
+                    'error' => false,
+                    'message' => 'Barang tidak Ada',
+                    'data'=> []
+                ];
+                $this->response($output, REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
+            }
+        }
+
+        if($id){
+            $where = [
+                'id'=> $id
+            ];
+            $getUserById = $this->Crud->readData('nama_barang,jenis,jumlah,input_date,status,id','table_barang',$where)->result();
+
+            if($getUserById){
+                $output = [
+                    'status' => 200,
+                    'error' => false,
+                    'message' => 'Berhasil Menambahkan Barang',
+                    'data'=> $getUserById
+                ];
+                $this->response($output, REST_Controller::HTTP_OK);
+            }else{
+                $output = [
+                    'status' => 404,
+                    'error' => false,
+                    'message' => 'Gagal Menambahkan Barat',
+                    'data'=> []
+                ];
+                $this->response($output, REST_Controller::HTTP_NOT_FOUND); 
+            }
+        }
+    }
+    public function barang_delete()
+    {
+
+        $id = (int) $this->get('id');
+
+        if($id){
+            $where = [
+                'id'=> $id
+            ];
+            $cekId = $this->Crud->readData('id','table_barang',$where)->num_rows();
+
+            if($cekId > 0){
+                
+                $this->Crud->deleteData('table_barang',$where);
+                $output = [
+                    'status' => 200,
+                    'error' => false,
+                    'message' => 'Berhasil Hapus barang',
+                ];
+                $this->response($output, REST_Controller::HTTP_OK);
+            }else{
+                $output = [
+                    'status' => 404,
+                    'error' => false,
+                    'message' => 'Barang Tidak Ditemukan',
+                ];
+                $this->response($output, REST_Controller::HTTP_NOT_FOUND); 
+            }
+        }
+    }
 }
