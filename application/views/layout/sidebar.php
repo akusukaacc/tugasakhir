@@ -17,8 +17,8 @@
                       </a>
             <ul class="sub">
             
-            <li><a class="" href="<?=base_url('dashboard/list_user')?>">All User</a></li>
-            <li><a class="" href="<?=base_url('dashboard/list_barang')?>">Barang</a></li>
+            <li><a class="" href="<?=base_url('dashboard/list_user')?>"> All User </a></li>
+            <li><a class="" href="<?=base_url('dashboard/list_barang')?>"> Item </a></li>
               
             </ul>
           </li>

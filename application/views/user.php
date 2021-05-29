@@ -19,8 +19,8 @@
                 <tbody>
                   <tr>
                     <th>No</th>
-                    <th>Nama</th>
-                    <th>Username</th>
+                    <th>Name</th>
+                    <th>User Name</th>
                     <th>Role</th>
                     <th>Action</th>
                   </tr>

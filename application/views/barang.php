@@ -6,7 +6,7 @@
             <ol class="breadcrumb">
               <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
               <li><i class="fa fa-table"></i>Master Data</li>
-              <li><i class="fa fa-th-list"></i>Barang</li>
+              <li><i class="fa fa-th-list"></i> Item </li>
             </ol>
           </div>
         </div>
@@ -18,13 +18,13 @@
               <table class="table table-striped table-advance table-hover">
                 <tbody>
                   <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Jenis</th>
-                    <th>Jumlah</th>
-                    <th>Tanggal</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <th> No </th>
+                    <th> Name </th>
+                    <th> Type </th>
+                    <th> Amount </th>
+                    <th> Date </th>
+                    <th> Status </th>
+                    <th> Action </th>
                   </tr>
 
                   <?php
