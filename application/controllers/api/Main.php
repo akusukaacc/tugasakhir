@@ -34,7 +34,7 @@ class Main extends BD_Controller {
                 $output = [
                     'status' => 200,
                     'error' => false,
-                    'message' => 'Success get user',
+                    'message' => 'Success Get User',
                     'data'=> $getUser
                 ];
                 $this->response($output, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
@@ -45,7 +45,7 @@ class Main extends BD_Controller {
                 $output = [
                     'status' => 404,
                     'error' => false,
-                    'message' => 'No users were found',
+                    'message' => 'No Users Were Found',
                     'data'=> []
                 ];
                 $this->response($output, REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
@@ -62,7 +62,7 @@ class Main extends BD_Controller {
                 $output = [
                     'status' => 200,
                     'error' => false,
-                    'message' => 'Success get user',
+                    'message' => 'Success Get User',
                     'data'=> $getUserById
                 ];
                 $this->response($output, REST_Controller::HTTP_OK);
@@ -101,14 +101,14 @@ class Main extends BD_Controller {
                     $output = [
                         'status' => 200,
                         'error' => false,
-                        'message' => 'Success edit user',
+                        'message' => 'Success Edit User',
                     ];
                     $this->response($output, REST_Controller::HTTP_OK);
                 }else{
                     $output = [
                         'status' => 400,
                         'error' => false,
-                        'message' => 'Failed edit user',
+                        'message' => 'Failed Edit User',
                     ];
                     $this->response($output, REST_Controller::HTTP_BAD_REQUEST); 
                 }
@@ -116,12 +116,11 @@ class Main extends BD_Controller {
                 $output = [
                     'status' => 404,
                     'error' => false,
-                    'message' => 'Failed delete user or id not found',
+                    'message' => 'Failed Delete User Or Id Not Found',
                 ];
                 $this->response($output, REST_Controller::HTTP_NOT_FOUND); 
             }
         }
-
     }
     public function users_delete()
     {
@@ -153,6 +152,66 @@ class Main extends BD_Controller {
             }
         }
     }
+    public function barang_get()
+    {
+
+        $id = $this->get('id');
+
+
+        if ($id === NULL)
+        {
+            $getBarang = $this->Crud->readData('id,nama_barang,jenis,jumlah,input_date,status','table_barang')->result();
+            if ($getBarang)
+            {
+                // Set the response and exit
+                $output = [
+                    'status' => 200,
+                    'error' => false,
+                    'message' => 'Success Get Barang',
+                    'data'=> $getBarang
+                ];
+                $this->response($output, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+            }
+            else
+            {
+                // Set the response and exit
+                $output = [
+                    'status' => 404,
+                    'error' => false,
+                    'message' => 'No Barang Were Found',
+                    'data'=> []
+                ];
+                $this->response($output, REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
+            }
+        }
+
+        if($id){
+            $where = [
+                'id'=> $id
+            ];
+            $getUserById = $this->Crud->readData('id,nama_barang,jenis,jumlah,input_date,status','table_barang','table_barang',$where)->result();
+
+            if($getUserById){
+                $output = [
+                    'status' => 200,
+                    'error' => false,
+                    'message' => 'Success Get User',
+                    'data'=> $getUserById
+                ];
+                $this->response($output, REST_Controller::HTTP_OK);
+            }else{
+                $output = [
+                    'status' => 404,
+                    'error' => false,
+                    'message' => 'Failed get User or id Not found',
+                    'data'=> []
+                ];
+                $this->response($output, REST_Controller::HTTP_NOT_FOUND); 
+            }
+        }
+
+    }
+
     public function barang_post(){
         $nama_barang = $this->post ('nama_barang');
         $jenis = $this->post ('jenis');
@@ -204,7 +263,7 @@ class Main extends BD_Controller {
                 $output = [
                     'status' => 200,
                     'error' => false,
-                    'message' => 'Berhasil Menambahkan Barang',
+                    'message' => 'Succses Add Item',
                     'data'=> $barangUser
                 ];
                 $this->response($output, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
@@ -215,7 +274,7 @@ class Main extends BD_Controller {
                 $output = [
                     'status' => 404,
                     'error' => false,
-                    'message' => 'Barang tidak Ada',
+                    'message' => 'Item Not Found',
                     'data'=> []
                 ];
                 $this->response($output, REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
@@ -232,7 +291,7 @@ class Main extends BD_Controller {
                 $output = [
                     'status' => 200,
                     'error' => false,
-                    'message' => 'Berhasil Menambahkan Barang',
+                    'message' => 'Succses Add Item',
                     'data'=> $getUserById
                 ];
                 $this->response($output, REST_Controller::HTTP_OK);
@@ -240,7 +299,7 @@ class Main extends BD_Controller {
                 $output = [
                     'status' => 404,
                     'error' => false,
-                    'message' => 'Gagal Menambahkan Barat',
+                    'message' => 'Failed To Add Item',
                     'data'=> []
                 ];
                 $this->response($output, REST_Controller::HTTP_NOT_FOUND); 
@@ -264,14 +323,14 @@ class Main extends BD_Controller {
                 $output = [
                     'status' => 200,
                     'error' => false,
-                    'message' => 'Berhasil Hapus barang',
+                    'message' => 'Successfully Deleted Items',
                 ];
                 $this->response($output, REST_Controller::HTTP_OK);
             }else{
                 $output = [
                     'status' => 404,
                     'error' => false,
-                    'message' => 'Barang Tidak Ditemukan',
+                    'message' => 'Item Not Found',
                 ];
                 $this->response($output, REST_Controller::HTTP_NOT_FOUND); 
             }
