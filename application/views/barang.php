@@ -2,10 +2,10 @@
       <section class="wrapper">
         <div class="row">
           <div class="col-lg-12">
-            <h3 class="page-header"><i class="fa fa-table"></i>MASTER DATA</h3>
+            <h3 class="page-header"><i class="fa fa-table"></i> MASTER DATA </h3>
             <ol class="breadcrumb">
-              <li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
-              <li><i class="fa fa-table"></i>Master Data</li>
+              <li><i class="fa fa-home"></i><a href="index.html"> Home </a></li>
+              <li><i class="fa fa-table"></i> Master Data </li>
               <li><i class="fa fa-th-list"></i> Item </li>
             </ol>
           </div>
@@ -29,19 +29,19 @@
 
                   <?php
                     $no = 1;
-                    foreach($datauser as $data  => $user){
+                    foreach($databarang as $data  => $barang){
                 ?>
 
                   <tr>
                     <td><?= $no; ?></td>
-                    <td><?= $user['nama_barang'];?></td>
-                    <td><?= $user['jenis'];?></td>
-                    <td><?= $user['jumlah'];?></td>
-                    <td><?= $user['input_date'];?></td>
-                    <td><?= $user['status'];?></td>
+                    <td><?= $barang['nama_barang'];?></td>
+                    <td><?= $barang['jenis'];?></td>
+                    <td><?= $barang['jumlah'];?></td>
+                    <td><?= $barang['input_date'];?></td>
+                    <td><?= $barang['status'];?></td>
                     <td>
                       <div class="btn-group">
-                        <a class="btn btn-danger" href="<?= base_url('dashboard/delete_barang/'.$user['id'])?>"><i class="icon_close_alt2"></i></a>
+                        <a class="btn btn-danger" href="<?= base_url('dashboard/delete_barang/'.$barang['id'])?>"><i class="icon_close_alt2"></i></a>
                     </div>
                     </td>
                   </tr>

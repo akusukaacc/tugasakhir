@@ -1,4 +1,4 @@
-<header class="header dark-bg">
+<header class="header" style="background-color:#000000">
       <div class="toggle-nav">
         <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
       </div>
@@ -21,7 +21,7 @@
               <div class="log-arrow-up"></div>
               <li class="eborder-top">
               <li>
-                <a href="login.html"><i class="icon_key_alt"></i> Log Out</a>
+                <a href="<?=base_url('dashboard/logout')?>"><i class="icon_key_alt"></i> Log Out</a>
               </li>
             </ul>
           </li>

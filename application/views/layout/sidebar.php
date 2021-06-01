@@ -1,9 +1,9 @@
 <!--sidebar start-->
 <aside>
-      <div id="sidebar" class="nav-collapse ">
+      <div id="sidebar" class="nav-collapse" style="background-color:#8d8d8">
         <!-- sidebar menu start-->
         <ul class="sidebar-menu">
-          <li class="active">
+          <li class="active" >
             <a class="" href="<?=base_url('dashboard/index')?>">
                           <i class="icon_house_alt"></i>
                           <span>Dashboard</span>
