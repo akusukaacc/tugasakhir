@@ -10,6 +10,13 @@
             </ol>
           </div>
         </div>
+        
+        <button class="btn btn-success"   type="button" data-toggle="modal" data-target="#exampleModal">
+     <i class="fas fa-plus"></i>
+Tambah
+</button>
+<br>
+<br>
         <!-- page start-->
         <div class="row">
           <div class="col-lg-12">
@@ -41,6 +48,7 @@
                     <td><?= $barang['status'];?></td>
                     <td>
                       <div class="btn-group">
+                        <a class="btn btn-primary" href="<?= base_url('dashboard/edit_barang/'.$barang['id'])?>"><i class="icon_plus_alt2"></i></a>
                         <a class="btn btn-danger" href="<?= base_url('dashboard/delete_barang/'.$barang['id'])?>"><i class="icon_close_alt2"></i></a>
                     </div>
                     </td>
@@ -55,6 +63,45 @@
             </section>
           </div>
         </div>
+        <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Menu</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form method="POST" enctype="multipart/form-data" action="<?= base_url('dashboard/create_barang'); ?>">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Name</label>
+                <input type="text" class="form-control" name="nama_barang" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Type</label>
+                <input type="text" class="form-control" name="jenis" required>
+            </div>
+
+
+            
+            <div class="form-group">
+                <label for="exampleInputEmail1">Amount</label>
+                <input type="number" class="form-control" name="jumlah" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Date</label>
+                <input type="date" class="form-control" name="input_date" required>
+            </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
         <!-- page end-->
       </section>
     </section>

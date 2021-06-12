@@ -189,7 +189,7 @@ class Main extends BD_Controller {
             $where = [
                 'id'=> $id
             ];
-            $getUserById = $this->Crud->readData('id,nama_barang,jenis,jumlah,input_date,status','table_barang','table_barang',$where)->result();
+            $getUserById = $this->Crud->readData('id,nama_barang,jenis,jumlah,input_date,status','table_barang',$where)->result();
 
             if($getUserById){
                 $output = [
@@ -248,59 +248,45 @@ class Main extends BD_Controller {
             $this -> set_response($output, REST_Controller ::HTTP_BAD_REQUEST);
         }
     }
-    public function barang_put()
-    {
+    public function barang_put(){
 
-        $id = $this->get('id');
-
-
-        if ($id === NULL)
-        {
-            $barangUser = $this->Crud->readData('nama_barang,jenis,jumlah,input_date,status,id','table_barang')->result();
-            if ($barangUser)
-            {
-                // Set the response and exit
-                $output = [
-                    'status' => 200,
-                    'error' => false,
-                    'message' => 'Succses Add Item',
-                    'data'=> $barangUser
-                ];
-                $this->response($output, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
-            }
-            else
-            {
-                // Set the response and exit
-                $output = [
-                    'status' => 404,
-                    'error' => false,
-                    'message' => 'Item Not Found',
-                    'data'=> []
-                ];
-                $this->response($output, REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
-            }
-        }
-
+        $id = (int) $this->get('id');
         if($id){
             $where = [
                 'id'=> $id
             ];
-            $getUserById = $this->Crud->readData('nama_barang,jenis,jumlah,input_date,status,id','table_barang',$where)->result();
+            $cekId = $this->Crud->readData('id','table_barang',$where)->num_rows();
 
-            if($getUserById){
-                $output = [
-                    'status' => 200,
-                    'error' => false,
-                    'message' => 'Succses Add Item',
-                    'data'=> $getUserById
+            if($cekId > 0){
+                $data = [
+                    "nama_barang" => $this->put('nama_barang'),
+                    "jenis" => $this->put('jenis'),
+                    "jumlah" => $this->put('jumlah'),
+                    "input_date" => $this->put('input_date'),
+                    "status" => $this->put('status'),
                 ];
-                $this->response($output, REST_Controller::HTTP_OK);
+
+                $updateData = $this->Crud->updateData('table_barang',$data,$where);
+                if($updateData){
+                    $output = [
+                        'status' => 200,
+                        'error' => false,
+                        'message' => 'Success Edit User',
+                    ];
+                    $this->response($output, REST_Controller::HTTP_OK);
+                }else{
+                    $output = [
+                        'status' => 400,
+                        'error' => false,
+                        'message' => 'Failed Edit User',
+                    ];
+                    $this->response($output, REST_Controller::HTTP_BAD_REQUEST); 
+                }
             }else{
                 $output = [
                     'status' => 404,
                     'error' => false,
-                    'message' => 'Failed To Add Item',
-                    'data'=> []
+                    'message' => 'Failed Delete User Or Id Not Found',
                 ];
                 $this->response($output, REST_Controller::HTTP_NOT_FOUND); 
             }
