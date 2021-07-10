@@ -22,11 +22,11 @@
         <form method="POST" enctype="multipart/form-data" action="<?= base_url('dashboard/proses_edit_user/'.$datamenu[0]['id']); ?>">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
-                <input type="text" class="form-control" name="name" required>
+                <input type="text" class="form-control" name="name" value="<?php echo($datamenu[0]['name']); ?>">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Username</label>
-                <input type="text" class="form-control" name="username" required>
+                <input type="text" class="form-control" name="username" value="<?php echo($datamenu[0]['username']); ?>">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Password</label>

@@ -22,26 +22,26 @@
         <form method="POST" enctype="multipart/form-data" action="<?= base_url('dashboard/proses_edit_baranguser/'.$datamenu[0]['id']); ?>">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
-                <input type="text" class="form-control" name="nama_barang" required>
+                <input type="text" class="form-control" name="nama_barang" value="<?php echo($datamenu[0]['nama_barang']); ?>">
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Type</label>
-                <input type="text" class="form-control" name="jenis" required>
+                <input type="text" class="form-control" name="jenis" value="<?php echo($datamenu[0]['jenis']); ?>">
             </div>
             
             <div class="form-group">
                 <label for="exampleInputEmail1">Amount</label>
-                <input type="number" class="form-control" name="jumlah" required>
+                <input type="number" class="form-control" name="jumlah" value="<?php echo($datamenu[0]['jumlah']); ?>">
             </div>
             
             <div class="form-group">
                 <label for="exampleInputEmail1">Price</label>
-                <input type="number" class="form-control" name="harga" required>
+                <input type="number" class="form-control" name="harga" value="<?php echo($datamenu[0]['harga']); ?>">
             </div>
             
             <div class="form-group">
                 <label for="exampleInputEmail1">Date</label>
-                <input type="date" class="form-control" name="input_date" required>
+                <input type="date" class="form-control" name="input_date" value="<?php echo($datamenu[0]['input_date']); ?>">
             </div>
             
                 <div class="mt-4">
