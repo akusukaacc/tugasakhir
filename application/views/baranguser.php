@@ -11,9 +11,14 @@
           </div>
         </div>
         
+        <button class="btn btn-success"   type="button" data-toggle="modal" data-target="#exampleModal">
+     <i class="icon_plus_alt2"></i>
+ ADD
 </button>
 <br>
 <br>
+
+
         <!-- page start-->
         <div class="row">
           <div class="col-lg-12">
@@ -31,11 +36,12 @@
                     <th> Status </th>
                     <th> Action </th>
                   </tr>
-
+                  
                   <?php
                     $no = 1;
-                    foreach($databarang as $data  => $barang){
-                     if($barang['status'] == 'Pending'){
+                    foreach($databarang  as $data  => $barang){
+                      if($username == $barang['username']){
+                        if($barang['status'] == 'Pending'){
                 ?>
 
                   <tr>
@@ -45,10 +51,10 @@
                     <td><?= $barang['jumlah'];?></td>
                     <td><?= $barang['harga'];?></td>
                     <td><?= $barang['input_date'];?></td>
-                    <td><?= $barang['status'];?></td>
+                    <td><?= $barang['status']?></td>
                     <td>
-                      <div class="btn-group">
-                        <a class="btn btn-success" href="<?= base_url('dashboard/proses_edit_barang/'.$barang['id'])?>"><i class="icon_check"></i></a>
+                    <div class="btn-group">
+                        <a class="btn btn-primary" href="<?= base_url('dashboard/edit_barang/'.$barang['id'])?>"><i class="icon_pencil-edit"></i></a>
                         <a class="btn btn-danger" href="<?= base_url('dashboard/delete_barang/'.$barang['id'])?>"><i class="icon_close_alt2"></i></a>
                     </div>
                     </td>
@@ -56,7 +62,8 @@
                 <?php
 
                 $no++;
-                     }
+                        }
+                      }
                 }
                 ?>
                 </tbody>

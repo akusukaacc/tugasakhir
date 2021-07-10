@@ -11,14 +11,23 @@ class Dashboard extends CI_Controller {
       if($this->session->userdata('isLoginAdmin') == true){
         $data = [
           'username' => $this->session->userdata('username'),
+          'role' => $this->session->userdata('role'),
           'title' => 'Dashboard | Home'
         ];
-
-        $this->load->view('layout/header',$data);
-        $this->load->view('layout/sidebar');
-        $this->load->view('layout/navbar',$data);
-        $this->load->view('dashboard');
-        $this->load->view('layout/footer');
+        if($data['role']=='admin'){
+          $this->load->view('layout/header',$data);
+          $this->load->view('layout/sidebar');
+          $this->load->view('layout/navbar',$data);
+          $this->load->view('dashboard');
+          $this->load->view('layout/footer');
+        }else{
+          $this->load->view('layout/header',$data);
+          $this->load->view('layout/sidebarUser');
+          $this->load->view('layout/navbar',$data);
+          $this->load->view('dashboard');
+          $this->load->view('layout/footer');
+        }
+        
       }
     }
   }
@@ -72,15 +81,16 @@ class Dashboard extends CI_Controller {
       if($cekLogin['role'] == 'admin'){
         $this->session->set_userdata('token', $cekLogin['token']);
         $this->session->set_userdata('username', $username);
+        $this->session->set_userdata('role', $cekLogin['role']);
         $this->session->set_userdata('isLoginAdmin', true);
         return redirect(base_url('dashboard'));
       }else{
+        $this->session->set_userdata('token', $cekLogin['token']);
+        $this->session->set_userdata('username', $username);
+        $this->session->set_userdata('role', $cekLogin['role']);
+        $this->session->set_userdata('id', $cekLogin['id']);
         $this->session->set_userdata('isLoginAdmin', true);
-        echo ("<script LANGUAGE='JavaScript'>
-        window.alert('You dont have access');
-        window.location.href='".base_url('dashboard/login')."';
-        </script>");
-        return;
+        return redirect(base_url('dashboard'));
       }
     }
    
@@ -145,7 +155,7 @@ class Dashboard extends CI_Controller {
            $deleteUser = json_decode($result,true);
            if($deleteUser['status'] == 200){
              echo ("<script LANGUAGE='JavaScript'>
-             window.alert('User deleted!');
+             window.alert('Successfully Deleted!');
              window.location.href='".base_url('dashboard/list_user')."';
              </script>");
            }else{
@@ -167,6 +177,8 @@ class Dashboard extends CI_Controller {
       if($this->session->userdata('isLoginAdmin') == true){
         $data = [
           'username' => $this->session->userdata('username'),
+          'role' => $this->session->userdata('role'),
+          'id' => $this->session->userdata('id'),
           'title' => 'Dashboard | User'
         ];
 
@@ -181,16 +193,72 @@ class Dashboard extends CI_Controller {
 
     $getBarang = json_decode($result,true);
     $barang['databarang'] = $getBarang['data'];
+    $barang['username'] = $data['username'];
     
-
-    $this->load->view('layout/header');
-    $this->load->view('layout/sidebar');
+    if($data['role']=='admin'){
+      $this->load->view('layout/header');
+      $this->load->view('layout/sidebar');
+      $this->load->view('layout/navbar');
+      $this->load->view('barang',$barang);
+      $this->load->view('layout/footer');
+    }else{
+      $this->load->view('layout/header');
+    $this->load->view('layout/sidebarUser');
     $this->load->view('layout/navbar');
-    $this->load->view('barang',$barang);
+    $this->load->view('baranguser',$barang);
     $this->load->view('layout/footer');
+    }
+    
       }
     }
   }
+  
+  public function list_hasil(){
+
+    $url = base_url('/api/main/barang');
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
+
+    if($this->session->userdata('token') == ''){
+      return redirect(base_url('dashboard/login'));
+    }else{
+      if($this->session->userdata('isLoginAdmin') == true){
+        $data = [
+          'username' => $this->session->userdata('username'),
+          'role' => $this->session->userdata('role'),
+          'title' => 'Dashboard | User'
+        ];
+
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+      'Authorization: Bearer '.$this->session->userdata('token'))
+    );
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // Make it so the data coming back is put into a string
+    // Send the request
+    $result = curl_exec($curl);
+    // Free up the resources $curl is using
+    curl_close($curl);
+
+    $getBarang = json_decode($result,true);
+    $barang['databarang'] = $getBarang['data'];
+    $barang['username'] = $data['username'];
+    if($data['role']=='admin'){
+      $this->load->view('layout/header');
+      $this->load->view('layout/sidebar');
+      $this->load->view('layout/navbar');
+      $this->load->view('hasil',$barang);
+      $this->load->view('layout/footer');
+    }else{
+      $this->load->view('layout/header');
+    $this->load->view('layout/sidebarUser');
+    $this->load->view('layout/navbar');
+    $this->load->view('hasiluser',$barang);
+    $this->load->view('layout/footer');
+    }
+    
+      }
+    }
+  }
+  
 
    public function delete_barang($id){
     $url = base_url('/api/main/barang/id/'.$id);
@@ -208,7 +276,7 @@ class Dashboard extends CI_Controller {
            $deleteBarang = json_decode($result,true);
            if($deleteBarang['status'] == 200){
              echo ("<script LANGUAGE='JavaScript'>
-             window.alert('User deleted!');
+             window.alert('Successfully deleted!');
              window.location.href='".base_url('dashboard/list_barang')."';
              </script>");
            }else{
@@ -225,14 +293,17 @@ class Dashboard extends CI_Controller {
       if($this->session->userdata('isLoginAdmin') == true){
         $data = [
           'username' => $this->session->userdata('username'),
+          'id' => $this->session->userdata('id'),
           'title' => 'Dashboard | Menu'
         ];
         $dataCreate = [
           'nama_barang'=> $this->input->post('nama_barang'),
           'jenis'=> $this->input->post('jenis'),
           'jumlah'=> $this->input->post('jumlah'),
+          'harga'=> $this->input->post('harga'),
           'input_date'=> $this->input->post('input_date'),
-          'status'=> 'Pending' ,
+          'status'=> 'Pending',
+          'username'=> $data['username'],
         ];
 
 
@@ -259,8 +330,55 @@ class Dashboard extends CI_Controller {
       
               
               echo ("<script LANGUAGE='JavaScript'>
-              window.alert('Berhasil di simpan');
+              window.alert('Saved successfully');
               window.location.href='".base_url('dashboard/list_barang')."';
+              </script>");
+              return;
+      }
+    }
+  }
+  public function create_user(){
+    if($this->session->userdata('token') == ''){
+      return redirect(base_url('dashboard/login'));
+    }else{
+      if($this->session->userdata('isLoginAdmin') == true){
+        $data = [
+          'username' => $this->session->userdata('username'),
+          'title' => 'Dashboard | Menu'
+        ];
+        $dataCreate = [
+          'name'=> $this->input->post('name'),
+          'username'=> $this->input->post('username'),
+          'password'=> $this->input->post('password'),
+          'role'=> $this->input->post('role'),
+        ];
+
+
+              $url = base_url('/api/auth/register');
+              $curl = curl_init($url);
+              curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+          
+              curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Authorization: Bearer '.$this->session->userdata('token')
+                )
+              );
+      
+              /* Set JSON data to POST */
+              curl_setopt($curl, CURLOPT_POSTFIELDS, $dataCreate);
+      
+              curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // Make it so the data coming back is put into a string
+              // Send the request
+              $result = curl_exec($curl);
+              // Free up the resources $curl is using
+              curl_close($curl);
+      
+              $getMenu = json_decode($result,true);
+              $menu['datamenu'] = $getMenu['data'];
+      
+              
+              echo ("<script LANGUAGE='JavaScript'>
+              window.alert('Saved successfully');
+              window.location.href='".base_url('dashboard/list_user')."';
               </script>");
               return;
       }
@@ -276,7 +394,7 @@ class Dashboard extends CI_Controller {
           'username' => $this->session->userdata('username'),
           'title' => 'Dashboard | Menu'
         ];
-        $url = base_url('/api/main/barang/id/'.$id);
+        $url = base_url('/api/main/baranguser/id/'.$id);
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
     
@@ -301,6 +419,41 @@ class Dashboard extends CI_Controller {
       }
     }
   }
+  public function edit_user($id){
+
+    if($this->session->userdata('token') == ''){
+      return redirect(base_url('dashboard/login'));
+    }else{
+      if($this->session->userdata('isLoginAdmin') == true){
+        $data = [
+          'username' => $this->session->userdata('username'),
+          'title' => 'Dashboard | Menu'
+        ];
+        $url = base_url('/api/main/users/id/'.$id);
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
+    
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+          'Authorization: Bearer '.$this->session->userdata('token')
+          )
+        );
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // Make it so the data coming back is put into a string
+        // Send the request
+        $result = curl_exec($curl);
+        // Free up the resources $curl is using
+        curl_close($curl);
+
+        $getMenu = json_decode($result,true);
+        $menu['datamenu'] = $getMenu['data'];
+
+        $this->load->view('layout/header',$data);
+        $this->load->view('layout/sidebar');
+        $this->load->view('layout/navbar',$data);
+        $this->load->view('edit_user',$menu);
+        $this->load->view('layout/footer');
+      }
+    }
+  }
   public function proses_edit_barang($id){
     if($this->session->userdata('token') == ''){
       return redirect(base_url('dashboard/login'));
@@ -311,11 +464,7 @@ class Dashboard extends CI_Controller {
           'title' => 'Dashboard | Menu'
         ];
         $dataCreate = [
-          'nama_barang'=> $this->input->post('nama_barang'),
-          'jenis'=> $this->input->post('jenis'),
-          'jumlah'=> $this->input->post('jumlah'),
-          'input_date'=> $this->input->post('input_date'),
-          'status'=> 'Pending' ,
+          'status'=> 'Approve' ,
         ];
 
         $url = base_url('/api/main/barang/id/'.$id);
@@ -364,11 +513,153 @@ class Dashboard extends CI_Controller {
               $menu['datamenu'] = $getMenu['status'];
              
               echo ("<script LANGUAGE='JavaScript'>
-              window.alert('Berhasil di edit');
+              window.alert('successfully approved');
               window.location.href='".base_url('dashboard/list_barang')."';
               </script>");
               return;
       }
     }
   }
+  public function proses_edit_user($id){
+    if($this->session->userdata('token') == ''){
+      return redirect(base_url('dashboard/login'));
+    }else{
+      if($this->session->userdata('isLoginAdmin') == true){
+        $data = [
+          'username' => $this->session->userdata('username'),
+          'title' => 'Dashboard | Menu'
+        ];
+        $dataCreate = [
+          'username'=> $this->input->post('username'),
+          'name'=> $this->input->post('name'),
+          'password'=> $this->input->post('password'),
+          'role'=> $this->input->post('role')
+        ];
+
+        $url = base_url('/api/main/users/id/'.$id);
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
+    
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+          'Authorization: Bearer '.$this->session->userdata('token')
+          )
+        );
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // Make it so the data coming back is put into a string
+        // Send the request
+        $result = curl_exec($curl);
+        // Free up the resources $curl is using
+        curl_close($curl);
+
+        $getMenu = json_decode($result,true);
+        $datamenu = $getMenu['data'];
+
+
+
+              $dataPut= json_encode($dataCreate);
+
+
+              // var_dump($dataCreate);die();
+              $url = base_url('/api/main/users/id/'.$id);
+              $curl = curl_init($url);
+              curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+          
+              curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Authorization: Bearer '.$this->session->userdata('token'),
+                'Content-Type:application/json'
+                )
+              );
+
+              /* Set JSON data to POST */
+              curl_setopt($curl, CURLOPT_POSTFIELDS, $dataPut);
+      
+              curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // Make it so the data coming back is put into a string
+              // Send the request
+              $result = curl_exec($curl);
+              // Free up the resources $curl is using
+              curl_close($curl);
+      
+              $getMenu = json_decode($result,true);
+              $menu['datamenu'] = $getMenu['status'];
+             
+              echo ("<script LANGUAGE='JavaScript'>
+              window.alert('Edited successfully');
+              window.location.href='".base_url('dashboard/list_user')."';
+              </script>");
+              return;
+      }
+    }
+  }
+  public function proses_edit_baranguser($id){
+    if($this->session->userdata('token') == ''){
+      return redirect(base_url('dashboard/login'));
+    }else{
+      if($this->session->userdata('isLoginAdmin') == true){
+        $data = [
+          'username' => $this->session->userdata('username'),
+          'title' => 'Dashboard | Menu'
+        ];
+        $dataCreate = [
+          'nama_barang'=> $this->input->post('nama_barang'),
+          'jenis'=> $this->input->post('jenis'),
+          'jumlah'=> $this->input->post('jumlah'),
+          'harga'=> $this->input->post('harga'),
+          'input_date'=> $this->input->post('input_date'),
+          'status'=> 'Pending',
+          'username'=> $data['username'],
+        ];
+
+        $url = base_url('/api/main/baranguser/id/'.$id);
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
+    
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+          'Authorization: Bearer '.$this->session->userdata('token')
+          )
+        );
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // Make it so the data coming back is put into a string
+        // Send the request
+        $result = curl_exec($curl);
+        // Free up the resources $curl is using
+        curl_close($curl);
+
+        $getMenu = json_decode($result,true);
+        $datamenu = $getMenu['data'];
+
+
+
+              $dataPut= json_encode($dataCreate);
+
+
+              // var_dump($dataCreate);die();
+              $url = base_url('/api/main/baranguser/id/'.$id);
+              $curl = curl_init($url);
+              curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+          
+              curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Authorization: Bearer '.$this->session->userdata('token'),
+                'Content-Type:application/json'
+                )
+              );
+
+              /* Set JSON data to POST */
+              curl_setopt($curl, CURLOPT_POSTFIELDS, $dataPut);
+      
+              curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);  // Make it so the data coming back is put into a string
+              // Send the request
+              $result = curl_exec($curl);
+              // Free up the resources $curl is using
+              curl_close($curl);
+      
+              $getMenu = json_decode($result,true);
+              $menu['datamenu'] = $getMenu['status'];
+             
+              echo ("<script LANGUAGE='JavaScript'>
+              window.alert('Edited successfully');
+              window.location.href='".base_url('dashboard/list_barang')."';
+              </script>");
+              return;
+      }
+    }
+  }
+  
 }

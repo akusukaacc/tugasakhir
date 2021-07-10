@@ -17,10 +17,8 @@
                       </a>
             <ul class="sub">
             
-            <li><a class="" style="background-color:#000000" href="<?=base_url('dashboard/list_user')?>"><i class="icon_profile"></i> All User </a></li>
             <li><a class="" style="background-color:#000000" href="<?=base_url('dashboard/list_barang')?>"><i class="icon_folder-add_alt"></i> Item </a></li>
             <li><a class="" style="background-color:#000000" href="<?=base_url('dashboard/list_hasil')?>"><i class="icon_book_alt"></i> Result </a></li>
-              
             </ul>
           </li>
 

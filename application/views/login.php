@@ -42,23 +42,20 @@
 
   <div class="container">
 
-    <form class="login-form" method="POST" action="<?= base_url('dashboard/prosesLogin') ?>">
+    <form class="login-form" method="POST"  action="<?= base_url('dashboard/prosesLogin') ?>">
       <div class="login-wrap">
         <p class="login-img"><i class="icon_lock_alt"></i></p>
         <div class="input-group">
-          <span class="input-group-addon"><i class="icon_profile"></i></span>
+          <span style="background-color:#ffd700" class="input-group-addon"><i class="icon_profile"></i></span>
           <input type="text" name ="username" class="form-control" placeholder="Username" autofocus>
         </div>
         <div class="input-group">
-          <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+          <span style="background-color:#ffd700" class="input-group-addon"><i class="icon_key_alt"></i></span>
           <input type="password" name="password" class="form-control" placeholder="Password">
         </div>
-        <label class="checkbox">
-                <input type="checkbox" value="remember-me"> Remember me
-                <span class="pull-right"> <a href="#"> Forgot Password?</a></span>
-            </label>
+        
         <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
-        <button class="btn btn-info btn-lg btn-block" type="submit">Signup</button>
+      
       </div>
     </form>
     <div class="text-right">
@@ -69,7 +66,6 @@
             Licensing information: https://bootstrapmade.com/license/
             Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
           -->
-          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
         </div>
     </div>
   </div>

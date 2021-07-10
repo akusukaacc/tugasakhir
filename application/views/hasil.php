@@ -2,16 +2,15 @@
       <section class="wrapper">
         <div class="row">
           <div class="col-lg-12">
-            <h3 class="page-header"><i class="fa fa-table"></i> LIST ITEM </h3>
+            <h3 class="page-header"><i class="fa fa-table"></i> LIST RESULT</h3>
             <ol class="breadcrumb">
               <li><i class="fa fa-home"></i><a href="index.html"> Home </a></li>
               <li><i class="fa fa-table"></i> Master Data </li>
-              <li><i class="fa fa-th-list"></i> Item </li>
+              <li><i class="fa fa-th-list"></i> Result </li>
             </ol>
           </div>
         </div>
-        
-</button>
+       
 <br>
 <br>
         <!-- page start-->
@@ -29,13 +28,12 @@
                     <th> Price </th>
                     <th> Date </th>
                     <th> Status </th>
-                    <th> Action </th>
                   </tr>
 
                   <?php
                     $no = 1;
                     foreach($databarang as $data  => $barang){
-                     if($barang['status'] == 'Pending'){
+                      if($barang['status']=='Approve'){
                 ?>
 
                   <tr>
@@ -47,16 +45,13 @@
                     <td><?= $barang['input_date'];?></td>
                     <td><?= $barang['status'];?></td>
                     <td>
-                      <div class="btn-group">
-                        <a class="btn btn-success" href="<?= base_url('dashboard/proses_edit_barang/'.$barang['id'])?>"><i class="icon_check"></i></a>
-                        <a class="btn btn-danger" href="<?= base_url('dashboard/delete_barang/'.$barang['id'])?>"><i class="icon_close_alt2"></i></a>
-                    </div>
+                     
                     </td>
                   </tr>
                 <?php
 
                 $no++;
-                     }
+                      }
                 }
                 ?>
                 </tbody>
