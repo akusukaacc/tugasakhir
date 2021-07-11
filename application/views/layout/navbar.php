@@ -4,7 +4,7 @@
       </div>
 
       <!--logo start-->
-      <a href="index" class="logo"> FISHPICK <span class="lite"> INVENTARIS </span></a>
+      <a href="<?=base_url('dashboard')?>" class="logo"> FISHPICK <span class="lite"> INVENTARIS </span></a>
       <!--logo end-->
 
       <div class="top-nav notification-row">
@@ -21,7 +21,7 @@
               <div class="log-arrow-up"></div>
               <li class="eborder-top"> 
               <li>
-                <a  href="<?=base_url('dashboard/logout')?>"><i class="icon_key_alt" ></i> Log Out</a>
+                <a  href="<?=base_url('dashboard/logout')?>"><i class="icon_key_alt" ></i> Log Out </a>
               </li>
             </ul>
           </li>
